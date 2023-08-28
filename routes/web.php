@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [PrincipalController::class, 'index'])->name('principal.index');
 Route::get('/sobre-nos', [SobreNosController::class, 'index'])->name('sobre-nos.index');
 Route::get('/contato', [ContatoController::class, 'index'])->name('contato.index');
+Route::post('/contato', [ContatoController::class, 'index'])->name('contato.index');
 Route::get('/login', function() {
     return 'login';
 });

@@ -54,7 +54,7 @@
     <h3>Dados do Fornecedor 3:</h3>
     <p>Fornecedor: {{ $fornecedores[2]['nome'] }}</p>
     <p>Status: {{ $fornecedores[2]['status'] }}</p>
-    <!-- 
+    <!--
         ?? ==> operador condicional de valor default. nas duas condições abaixo, caso alguma seja true, o valor default será utilizado no lugar da variável em questão.
         $var testada não estiver definida (isset)
         ou
@@ -66,26 +66,82 @@
 <hr>
 
 @isset($fornecedores)
-    <h3>Dados do Fornecedor 4:</h3>
-    <p>Fornecedor: {{ $fornecedores[3]['nome'] }}</p>
-    <p>Status: {{ $fornecedores[3]['status'] }}</p>
-    <p>CNPJ: {{ $fornecedores[3]['cnpj'] ?? 'Dado não foi preenchido' }}</p>
-    <span>Telefone: {{ $fornecedores[3]['ddd'] ?? '' }} {{ $fornecedores[3]['telefone'] }}</span>
-    @switch($fornecedores[3]["ddd"])
-        @case('11')
-            São Paulo - SP
-            @break
-        @case('21')
-            Rio de Janeiro - RJ
-            @break
-        @case('85')
-            Fortaleza - CE
-            @break
-        @case('96')
-            Macapá - AP
-            @break
-        @default
-            Estado não identificado
-    @endswitch
+    <h2>usando laço for</h2>
+    @for ($i = 0; $i < count($fornecedores); $i++)
+        <h3>Dados do fornecedor: {{ $fornecedores[$i]['nome'] }}</h3>
+        <p>Status: {{ $fornecedores[$i]['status'] }}</p>
+        <p>CNPJ: {{ $fornecedores[$i]['cnpj'] ?? 'Dado não foi preenchido' }}</p>
+        <span>Telefone: {{ $fornecedores[$i]['ddd'] ?? '' }} {{ $fornecedores[$i]['telefone'] }}</span>
+        <hr>
+    @endfor
 @endisset
 
+
+@isset($fornecedores)
+    <h2>usando laço while</h2>
+    @php $i = 0 @endphp
+    @while ($i < count($fornecedores))
+        <h3>Dados do fornecedor: {{ $fornecedores[$i]['nome'] }}</h3>
+        <p>Status: {{ $fornecedores[$i]['status'] }}</p>
+        <p>CNPJ: {{ $fornecedores[$i]['cnpj'] ?? 'Dado não foi preenchido' }}</p>
+        <span>Telefone: {{ $fornecedores[$i]['ddd'] ?? '' }} {{ $fornecedores[$i]['telefone'] }}</span>
+        <hr>
+        @php $i++ @endphp
+    @endwhile
+@endisset
+
+@isset($fornecedores)
+    <h2>usando laço foreach</h2>
+    @foreach ($fornecedores as $indice => $fornecedor)
+        <h3>Dados do fornecedor: {{ $fornecedor['nome'] }}</h3>
+        <p>Status: {{ $fornecedor['status'] }}</p>
+        <p>CNPJ: {{ $fornecedor['cnpj'] ?? 'Dado não foi preenchido' }}</p>
+        <span>Telefone: {{ $fornecedor['telefone'] ?? '' }} {{ $fornecedor['telefone'] }}</span>
+        <hr>
+    @endforeach
+@endisset
+
+@isset($fornecedores)
+    <h2>usando laço forelse</h2>
+    {{-- caso o array utilizado esteja vazio, cairá no bloco @empty --}}
+    @forelse  ($fornecedores as $indice => $fornecedor)
+        <h3>Dados do fornecedor: {{ $fornecedor['nome'] }}</h3>
+        <p>Status: {{ $fornecedor['status'] }}</p>
+        <p>CNPJ: {{ $fornecedor['cnpj'] ?? 'Dado não foi preenchido' }}</p>
+        <span>Telefone: {{ $fornecedor['telefone'] ?? '' }} {{ $fornecedor['telefone'] }}</span>
+        <hr>
+    @empty
+        nao existem fornecedores cadastrados
+    @endforelse 
+@endisset
+
+
+@isset($fornecedores)
+    <h2>espacando tag de impressão do blade, ou seja, exibindo o codigo como texto</h2>
+    @for ($i = 0; $i < count($fornecedores); $i++)
+        <h3>Dados do fornecedor: @{{ $fornecedores[$i]['nome'] }}</h3>
+        <p>Status: {{ $fornecedores[$i]['status'] }}</p>
+        <p>CNPJ: @{{ $fornecedores[$i]['cnpj'] ?? 'Dado não foi preenchido' }}</p>
+        <span>Telefone: {{ $fornecedores[$i]['ddd'] ?? '' }} {{ $fornecedores[$i]['telefone'] }}</span>
+        <hr>
+    @endfor
+@endisset
+
+@isset($fornecedores)
+    <h2>utilizando a variavel $loop</h2>
+    @foreach ($fornecedores as $indice => $fornecedor)
+        <h3>Dados do fornecedor: {{ $fornecedor['nome'] }}</h3>
+        <h4>iteração atual do loop: {{ $loop->iteration }}</h4>
+        <p>Status: {{ $fornecedor['status'] }}</p>
+        <p>CNPJ: {{ $fornecedor['cnpj'] ?? 'Dado não foi preenchido' }}</p>
+        <span>Telefone: {{ $fornecedor['telefone'] ?? '' }} {{ $fornecedor['telefone'] }}</span>
+        @if ($loop->first)
+            <p>essa foi a primeira iteração do loop</p>
+        @elseif ($loop->last)
+            <p>essa foi a ultima iteração do loop</p>
+            <p>total de fornecedores exibidos: {{ $loop->count }}</p>
+        @endif
+
+        <hr>
+    @endforeach
+@endisset

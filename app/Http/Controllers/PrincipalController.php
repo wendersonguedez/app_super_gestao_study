@@ -8,6 +8,8 @@ class PrincipalController extends Controller
 {
     public function index()
     {
-        return view('site.principal');
+        /* titulo que será inserido no arquivo head */
+        $title = "Home";
+        return view('site.principal', compact('title'));
     }
 }
