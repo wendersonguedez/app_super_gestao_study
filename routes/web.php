@@ -139,4 +139,15 @@ Route::prefix('eloquent')->group(function () {
             ->orderBy('id')
             ->get();
     });
+
+    /**
+     * Retorna todos os registros que possuem o nome diferente de Fernando, o motivo de contato entre os valores 1 e 2 
+     * e a data de criação entre 2024-01-01 e 2024-10-31.
+     */
+    Route::get('/multiple-wheres', function () {
+        return SiteContato::where('nome', '<>', 'Fernando')
+            ->whereIn('motivo_contato', [1, 2])
+            ->whereBetween('created_at', ['2024-01-01', '2024-10-31'])
+            ->get();
+    });
 });
