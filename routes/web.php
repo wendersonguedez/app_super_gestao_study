@@ -103,7 +103,7 @@ Route::prefix('eloquent')->group(function () {
      * Retorna todos os registros que possuem o motivo de contato 1.
      */
     Route::get('/where-in', function () {
-        return SiteContato::whereIn('motivo_contato', [1])->get();
+        return SiteContato::whereIn('motivo_contato', [1, 3])->get();
     });
 
     /**
@@ -111,5 +111,32 @@ Route::prefix('eloquent')->group(function () {
      */
     Route::get('/where-not-in', function () {
         return SiteContato::whereNotIn('motivo_contato', [1])->get();
+    });
+
+    /**
+     * Retorna todos os registros que possuem o motivo de contato entre os valores 1 e 3.
+     * 
+     * A diferença entre o whereIn e whereBetween é que o whereIn realiza uma comparação de igualdade dos valores passados,
+     * enquanto o whereBetween realiza uma comparação com base em um intervalo. 
+     * Ou seja, no whereIn, o retorno será de registros cujo campo esteja igual a qualquer valor passado, enquanto no whereBetween, 
+     * o retorno será de registros cujo campo esteja entre os valores passados.
+     * 
+     * Exemplo: Irá retornar os registros 3, 4, 5 e 6.
+     */
+    Route::get('where-between', function () {
+        return SiteContato::whereBetween('motivo_contato', [1, 3])
+            ->orderBy('id')
+            ->get();
+    });
+
+    /**
+     * Retornar todos os registros que não estiverem entre os valores 3 e 6.
+     * 
+     * Exemplo: Irá retornar os registros 1, 2. Registros 3, 4, 5 e 6 não serão retornados.
+     */
+    Route::get('/where-not-between', function () {
+        return SiteContato::whereNotBetween('id', [3, 6])
+            ->orderBy('id')
+            ->get();
     });
 });
