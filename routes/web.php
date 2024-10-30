@@ -150,4 +150,104 @@ Route::prefix('eloquent')->group(function () {
             ->whereBetween('created_at', ['2024-01-01', '2024-10-31'])
             ->get();
     });
+
+    /**
+     * Retorna todos os registros que possuem o nome diferente de Fernando 
+     * ou o motivo de contato seja maior que 2 ou que a data de criação seja anterior a 2024-10-31.
+     * 
+     * 'Fernando' será excluído da consulta, porque a primeira clásula 'where('nome', '<>', 'Fernando')' é um condição
+     * obrigatória.
+     */
+    Route::get('/or-where', function () {
+        return SiteContato::where('nome', '<>', 'Fernando')
+        ->orWhere('motivo_contato', '>', 2)
+        ->orWhere('created_at', '<', '2024-10-31')
+        ->get();
+    });
+
+    /**
+     * Retorna apenas registros que possuem o nome diferente de Helena, o motivo de contato seja 2 e a data de criação seja nula.
+     */
+    Route::get('/where-null', function () {
+        return SiteContato::where('nome', '<>', 'Helena')
+        ->whereIn('motivo_contato', [2])
+        ->whereNull('created_at')
+        ->get();
+    });
+
+    /**
+     * Retorna apenas registros que possuem o nome diferente de Helena, o motivo de contato seja 2 e a data de criação náo seja nula.
+     */
+    Route::get('/where-not-null', function () {
+        return SiteContato::where('nome', '<>', 'Helena')
+        ->whereIn('motivo_contato', [1, 2])
+        ->whereNotNull('created_at')
+        ->get();
+    });
+
+    /**
+     * Retorna apenas registros que possuem a data de criação em 2024-01-01.
+     */
+    Route::get('/where-date', function () {
+        return SiteContato::whereDate('created_at', '2024-01-01')
+            ->get();
+    });
+
+    /**
+     * Retorna apenas registros que possuem a data de criação em 2024-01-01 ou 2024-01-10.
+     */
+    Route::get('or-where-date', function () {
+        return SiteContato::whereDate('created_at', '2024-01-01')
+            ->orWhereDate('created_at', '2024-01-10')
+            ->get();
+    });
+
+    /**
+     * Retorna apenas registros que possuem a data de criação no dia 29, independente do mês ou ano.
+     */
+    Route::get('/where-day', function () {
+        return SiteContato::whereDay('created_at', '29')
+            ->get();
+    });
+
+    /**
+     * Retorna apenas registros que possuem a data de criação no mês 01, independente do dia ou ano.
+     */
+    Route::get('/where-month', function () {
+        return SiteContato::whereMonth('created_at', '01')
+            ->get();
+    });
+
+    /**
+     * Retorna apenas registros que possuem a data de criação no ano 2023 e que tenham o dia 28 ou 14.
+     */
+    Route::get('/where-year-and-where-day', function () {
+        return SiteContato::whereYear('created_at', '2023')
+            ->whereDay('created_at', 28)
+            ->orWhereDay('created_at', 14)
+            ->get();
+    });
+
+    /**
+     * Retorna apenas registros que possuem a hora de criação em 12:41:53 ou 12:42:05.
+     * 
+     * Pode ser utilizado operadores de comparação, como o operador de igualdade (=), 
+     * o operador de diferença (!=), o operador de maior que (>) e o operador de menor que (<).
+     * 
+     * Também é possível encadear diversos outros wheres para realizar comparações complexas.
+     */
+    Route::get('/where-time', function () {
+        return SiteContato::whereTime('created_at', '=', '12:41:53')
+            ->orWhereTime('created_at', '12:42:05')
+            ->get();
+    });
+
+    /**
+     * Retorna apenas registros que possuem a hora de criação entre 12:35:37 e 12:38:17.
+     */
+    Route::get('/where-time-between', function () {
+        return SiteContato::whereTime('created_at', '>=', '12:35:37')
+            ->whereTime('created_at', '<=', '12:38:17')
+            ->get();
+    });
 });
