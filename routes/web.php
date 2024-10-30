@@ -158,10 +158,30 @@ Route::prefix('eloquent')->group(function () {
      * 'Fernando' será excluído da consulta, porque a primeira clásula 'where('nome', '<>', 'Fernando')' é um condição
      * obrigatória.
      */
-    Route::get('or-where', function () {
+    Route::get('/or-where', function () {
         return SiteContato::where('nome', '<>', 'Fernando')
         ->orWhere('motivo_contato', '>', 2)
         ->orWhere('created_at', '<', '2024-10-31')
+        ->get();
+    });
+
+    /**
+     * Retorna apenas registros que possuem o nome diferente de Helena, o motivo de contato seja 2 e a data de criação seja nula.
+     */
+    Route::get('/where-null', function () {
+        return SiteContato::where('nome', '<>', 'Helena')
+        ->whereIn('motivo_contato', [2])
+        ->whereNull('created_at')
+        ->get();
+    });
+
+    /**
+     * Retorna apenas registros que possuem o nome diferente de Helena, o motivo de contato seja 2 e a data de criação náo seja nula.
+     */
+    Route::get('/where-not-null', function () {
+        return SiteContato::where('nome', '<>', 'Helena')
+        ->whereIn('motivo_contato', [1, 2])
+        ->whereNotNull('created_at')
         ->get();
     });
 });
