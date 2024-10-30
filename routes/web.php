@@ -150,4 +150,18 @@ Route::prefix('eloquent')->group(function () {
             ->whereBetween('created_at', ['2024-01-01', '2024-10-31'])
             ->get();
     });
+
+    /**
+     * Retorna todos os registros que possuem o nome diferente de Fernando 
+     * ou o motivo de contato seja maior que 2 ou que a data de criação seja anterior a 2024-10-31.
+     * 
+     * 'Fernando' será excluído da consulta, porque a primeira clásula 'where('nome', '<>', 'Fernando')' é um condição
+     * obrigatória.
+     */
+    Route::get('or-where', function () {
+        return SiteContato::where('nome', '<>', 'Fernando')
+        ->orWhere('motivo_contato', '>', 2)
+        ->orWhere('created_at', '<', '2024-10-31')
+        ->get();
+    });
 });
