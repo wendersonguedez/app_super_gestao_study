@@ -98,7 +98,7 @@ Route::get('/param/{p1}/{p2}', [ParametroController::class, 'index'])->name('par
 /**
  * Grupo de rotas para o módulo de eloquent ORM.
  */
-Route::prefix('eloquent')->group(function () {
+Route::prefix('/eloquent')->group(function () {
     /**
      * Retorna todos os registros que possuem o motivo de contato 1.
      */
@@ -123,7 +123,7 @@ Route::prefix('eloquent')->group(function () {
      * 
      * Exemplo: Irá retornar os registros 3, 4, 5 e 6.
      */
-    Route::get('where-between', function () {
+    Route::get('/where-between', function () {
         return SiteContato::whereBetween('motivo_contato', [1, 3])
             ->orderBy('id')
             ->get();
@@ -196,7 +196,7 @@ Route::prefix('eloquent')->group(function () {
     /**
      * Retorna apenas registros que possuem a data de criação em 2024-01-01 ou 2024-01-10.
      */
-    Route::get('or-where-date', function () {
+    Route::get('/or-where-date', function () {
         return SiteContato::whereDate('created_at', '2024-01-01')
             ->orWhereDate('created_at', '2024-01-10')
             ->get();
